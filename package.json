@@ -1,0 +1,24 @@
+{
+    "name": "brightspace-api-sample-app",
+    "version": "1.0.0",
+    "description": "Sample application showing the evolution of an integration consuming Brightspace APIs",
+    "main": "server.js",
+    "scripts": {
+      "lint": "jshint src",
+      "local": "node src/server-local.js",
+      "start": "node src/server.js",
+      "test": "npm run lint"  
+    },
+    "author": "Desire2Learn Inc.",
+    "license": "Apache License 2.0",
+    "dependencies": {
+      "cookie-parser": "^1.4.3",
+      "express": "~4.16.3",
+      "superagent": "~0.17.0"
+    },
+    "devDependencies": {
+      "jshint": "^2.9.5",
+      "openssl-self-signed-certificate": "^1.1.6"
+    }
+  }
+  
