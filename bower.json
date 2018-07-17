@@ -9,8 +9,12 @@
   "homepage": "https://github.com/Brightspace/Valence-Chat",
   "private": true,
   "dependencies": {
+    "d2l-typography": "^6.1.3",
+    "iron-ajax": "PolymerElements/iron-ajax#^2.1.3",
     "polymer": "^2.0.0",
-    "iron-ajax": "PolymerElements/iron-ajax#^2.1.3"
+    "d2l-text-input": "^0.4.0",
+    "d2l-button": "^4.5.1",
+    "d2l-loading-spinner": "^6.0.3"
   },
   "ignore": [
     "**/.*",
