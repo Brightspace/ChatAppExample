@@ -14,8 +14,9 @@ app.use(cookieParser());
 // Import Authorization
 app.use(require('./authorization/oauth.js')());
 
-// Import Sample API Calls
+// Import API Calls
 app.use(require('./apis/whoami')());
+app.use(require('./apis/enrollments')());
 
 /* GET /
 * The default server location that will return the index html page.
