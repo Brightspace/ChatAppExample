@@ -5,6 +5,7 @@
 const configs = require('../configurations'),
       request = require('superagent'),
       express = require('express'),
+      path = require('path'),
       router = express.Router();
 
 const createUrl = function(apiRoute) {
@@ -25,7 +26,24 @@ module.exports = function() {
         request
             .get(profileRoute)
             .set('Authorization', `Bearer ${accessToken}`)
-            .pipe(res);
+            .end(function(error, response) {
+                if(error) {
+                    console.log('Error calling the profile image route', error);
+                    res.status(500).send({ error: error });
+                } else if(response.statusCode !== 200) {
+                    res.sendFile(path.join((__dirname + '/../images/default-profile.png')));
+                    return;
+                } else {
+                    res.set('Content-Type', response.headers['content-type']);
+                    response.on('data', function(data) {
+                        res.write(data);
+                    });
+                    response.on('end', function() {
+                        res.end();
+                        return;
+                    });
+                }
+            });
     });
 
     return router;
