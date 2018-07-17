@@ -5,6 +5,28 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script>
+        $(document).ready(function(){
+          var socket = io();
+          socket.emit('user online', 'ME');
+        });
+    </script>
+    <script>
+      $(document).ready(function(){
+         $.ajax({
+            url: '/messages',
+            data: { format: 'json' },
+            type:'GET',
+            dataType:'json',
+            success:  function (data) {
+              data.forEach(function(element) {
+                $('#myMessages').append($('<li>').text(element));
+              });
+            },
+            error: function (err)  { alert ("Error " + err); }
+         });
+      });
+    </script>
+    <script>
       $(function(){
         var socket = io();
 
@@ -16,15 +38,27 @@
 
         myUpdate = function(message){
           $('#myMessages').append($('<li>').text(message));
-        }
+        };
+
+        userOnline = function(message){
+          $('#myUsers').append($('<li>').text(message + ' online'));
+        };
+
+        userOffline = function(message){
+          $('#myUsers').append($('<li>').text(message + ' offline'));
+        };
 
         $('form').submit(mySubmit);
         socket.on('new message', myUpdate);
+        socket.on('user online', userOnline);
+        socket.on('user offline', userOffline);
       });
     </script>
   </head>
   <body>
     <form action=""><input id="myInput" autocomplete="off" /></form>
+    <ul id="myUsers"></ul>
     <ul id="myMessages"></ul>
+    <button onclick="window.location='/messages'">See messages</button>
   </body>
 </html>
