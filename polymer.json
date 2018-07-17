@@ -1,0 +1,16 @@
+{
+    "entrypoint": "src/html/index.html",
+    "fragments": [
+        "src/html/elements/chat-window.html",
+        "src/html/elements/classlist-item.html",
+        "src/html/elements/classlist-pane.html",
+        "src/html/elements/chat-application.html"
+    ],
+    "lint": {
+        "rules": ["polymer-2-hybrid"]
+    },
+    "extraDependencies": [
+        "bower_components/webcomponentsjs/webcomponents-lite.js"
+    ],
+    "sources": [ "src/html/*"]
+}

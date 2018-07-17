@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+    <head>
+        <script src="../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <link rel="import" href="elements/chat-application.html">
+        <style>
+            html, body {
+                height: 100%;
+                margin: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <chat-application id="chatApplication"></chat-application>
+        <script>
+
+            HTMLImports.whenReady( function(){
+               document.getElementById("chatApplication").scrollToBottom();
+            });
+            
+             $(function(){
+
+                var socket = io();
+                
+                document.querySelector('chat-application').addEventListener('send-message', function (e) {
+                    socket.emit('new message', e.detail);
+                });
+
+                document.querySelector('chat-application').addEventListener('user-online', function (e) {
+                    var socket = io();
+                    socket.emit('user online', e.detail.Identifier);
+                });
+
+                newMessage = function(message) {
+                    document.getElementById("chatApplication").addMessage(message);
+                };
+
+                userOnline = function(message) {
+                    document.getElementById("chatApplication").userOnline(message);
+                };
+
+                userOffline = function(message) {
+                    document.getElementById("chatApplication").userOffline(message);
+                };
+                socket.on('new message', newMessage);
+                socket.on('user online', userOnline);
+                socket.on('user offline', userOffline);
+            });
+
+        </script>
+    </body>
+</html>

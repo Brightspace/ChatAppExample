@@ -1,0 +1,167 @@
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="chat-window.html">
+<link rel="import" href="classlist-pane.html">
+
+<dom-module id="chat-application">
+
+    <template>
+        
+        <style>
+            .content {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                width: 100%;
+            }
+            .chatApplication {
+                display:flex;
+                flex-direction: row;
+                height: 100%;
+                width: 100%;
+            }
+            .leftDisplay {
+                background-color: red; 
+                flex: 4 0 0;
+            }
+            .rightDisplay {
+                background-color: green;  
+                flex: 1 0 0;  
+                padding: 10px;    
+                overflow: auto;
+            }
+            .title {
+                padding-left: 10px;
+            }
+            .leftInnerDisplay {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                height: 100%;
+            }
+            .chatDisplay {
+                width: 100%;
+                background: blue;
+                flex-grow: 1;
+                overflow-x: hidden;
+                overflow-y: auto;
+                display: flex;
+                flex-direction: column;
+            }
+            .chatInput {
+                width: 100%;
+            }
+            .submit {
+                padding: 20px;
+                display:flex;
+                flex-direction: row;
+            }
+            #messageText {
+                flex-grow: 1;
+                height: 50px;
+            }
+            #sendButton {
+                width: 100px;
+            }
+        </style>
+
+        <div class="content">
+            <div class="title">
+                <h2>Chat</h2>
+            </div>
+            <div class="chatApplication">
+                <div class="leftDisplay">
+                    <div class="leftInnerDisplay">
+                        <div class="chatDisplay">
+                            <chat-window id="chatWindow"></chat-window>
+                        </div>
+                        <div class="chatInput">
+                            <div class="submit">
+                                <input on-keydown="_checkForEnter" id="messageText" type="text"></textarea>
+                                <input on-click="_sendMessage" id="sendButton" value="send" type="button" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rightDisplay">
+                    <classlist-pane id="classlistPane" me="{{me}}"></classlist-pane>
+                </div>
+            </div>
+        </div>
+
+        <iron-ajax
+            auto
+            url="https://localhost:34343/whoami"
+            handle-as="json"
+            on-response="_handleWhoAmIResponse">
+        </iron-ajax>
+
+    </template>
+
+    <script>
+        class ChatApplication extends Polymer.Element {
+            static get is(){ return 'chat-application'; }
+            static get properties() {
+                return {
+                    me: {
+                        type: Object,
+                        value() {
+                            return {};
+                        },
+                        notify: true
+                    }
+                };
+            }
+            ready() {
+                super.ready();
+                this.addEventListener('scroll-to-bottom', this.scrollToBottom);
+            }
+
+            _sendMessage() {
+                var text = this.$.messageText.value;
+                var name = this.me.FirstName + ' ' + this.me.LastName;
+                this.dispatchEvent(new CustomEvent('send-message', {bubbles: true, composed: true, detail: {message: text, name: name }}));
+                this.$.messageText.value = '';
+            }
+
+            addMessage(message) {
+                this.$.chatWindow.addMessage(message);
+            }
+
+            userOnline(userId) {
+                this.$.classlistPane.userWentOnline(userId);
+            }
+
+            userOffline(userId) {
+                 this.$.classlistPane.userWentOffline(userId);
+            }
+
+            scrollToBottom() {
+                var chatDisplay = this.shadowRoot.querySelector('.chatDisplay');
+                if(chatDisplay) {
+                    setTimeout(
+                        function(){
+                            chatDisplay.scrollTop = chatDisplay.scrollHeight;            
+                        }, 
+                        0
+                    );
+                }                
+            }
+
+            _handleWhoAmIResponse(response) {
+                this.me = response.detail.response;
+                this.dispatchEvent(new CustomEvent('user-online', {bubbles: true, composed: true, detail: response.detail.response }));
+                this.$.classlistPane.loadClasslist();
+            }
+
+             _checkForEnter(e) {
+                if (e.keyCode === 13) {
+                    this._sendMessage();
+                }
+            }
+        }
+
+        window.customElements.define(ChatApplication.is, ChatApplication);
+    </script>
+
+</dom-module>

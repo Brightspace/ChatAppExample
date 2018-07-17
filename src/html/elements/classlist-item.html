@@ -1,0 +1,47 @@
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../bower_components/polymer/lib/elements/dom-if.html">
+
+<dom-module id="classlist-item">
+
+    <template>
+        <style>
+            .classlistItem {
+                display: flex;
+                flex-direction: row;
+            }
+            .image {
+                height: 40px;
+                width: 40px;
+                padding-right: 10px;
+            }
+        </style>
+
+        <div class="classlistItem">
+            <template is="dom-if" if="{{isOnline}}">
+                <div class="profileImage">
+                    <img class="image" src="https://localhost:34343/profileimage?profileId={{profileId}}" alt="Profile Image"/>
+                </div>
+            </template>
+            <div class="name">
+                {{name}}
+            </div>
+        </div>
+
+    </template>
+
+    <script>
+        class ClasslistItem extends Polymer.Element {
+            static get is(){ return 'classlist-item'; }
+            static get properties() {
+                return {
+                    name: String,
+                    profileId: String,
+                    isOnline: Boolean,
+                };
+            }
+        }
+
+        window.customElements.define(ClasslistItem.is, ClasslistItem);
+    </script>
+
+</dom-module>
