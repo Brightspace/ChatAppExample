@@ -20,6 +20,7 @@ app.use(require('./authorization/oauth.js')());
 app.use(require('./apis/whoami')());
 app.use(require('./apis/classlist')());
 app.use(require('./apis/profileimage')());
+app.use(require('./apis/lti')());
 app.use(require('./apis/messages')());
 
 /* GET /
