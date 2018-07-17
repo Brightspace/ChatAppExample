@@ -5,10 +5,12 @@
 const 
     express = require('express'),
     cookieParser = require('cookie-parser'),
+    bodyParser = require('body-parser'),
     configs = require('./configurations'),
     path = require('path'),
     app = express();
 
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Import Authorization
@@ -24,6 +26,13 @@ app.use(require('./apis/profileimage')());
 */
 app.get('/', function(req, res) {
      res.sendFile(path.join(__dirname+'/html/login.html'));
+});
+
+/* GET /
+* The light html page to confirm socket implementation
+*/
+app.get('/socketTest', function(req, res) {
+    res.sendFile(path.join(__dirname+'/html/socketTest.html'));
 });
 
 module.exports = app;
