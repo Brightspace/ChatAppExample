@@ -21,6 +21,8 @@ module.exports = {
     instanceUrl: process.env.INSTANCE_URL || 'localhost',
     instancePort: process.env.INSTANCE_PORT || '44444',
     state: process.env.STATE || 'ed9dda12-1397-4bac-aba2-096acc7d24f1',
-    tokenEndpoint: process.env.TOKEN_ENDPOINT || 'https://auth-dev.proddev.d2l/core/connect/token'
+    tokenEndpoint: process.env.TOKEN_ENDPOINT || 'https://auth-dev.proddev.d2l/core/connect/token',
+    orgUnitId: 6609,
+    successEndpoint: '/enrollments'
 };
 }());
