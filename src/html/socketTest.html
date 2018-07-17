@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Socket Test</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+      $(function(){
+        var socket = io();
+
+        mySubmit = function(){
+          socket.emit('new message', $('#myInput').val());
+          $('#myInput').val('');
+          event.preventDefault();
+        };
+
+        myUpdate = function(message){
+          $('#myMessages').append($('<li>').text(message));
+        }
+
+        $('form').submit(mySubmit);
+        socket.on('new message', myUpdate);
+      });
+    </script>
+  </head>
+  <body>
+    <form action=""><input id="myInput" autocomplete="off" /></form>
+    <ul id="myMessages"></ul>
+  </body>
+</html>
