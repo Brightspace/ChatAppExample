@@ -16,11 +16,16 @@ app.use(cookieParser());
 // Import Authorization
 app.use(require('./authorization/oauth.js')());
 
-// Import API Calls
+// Import Sample API Calls
 app.use(require('./apis/whoami')());
 app.use(require('./apis/classlist')());
 app.use(require('./apis/profileimage')());
 app.use(require('./apis/messages')());
+
+/* GET /
+* Serve up the files in the build directory which has our UI components and index page.
+*/
+app.use('/ui', express.static(path.join(__dirname, '../build/default')));
 
 /* GET /
 * The default server location that will return the index html page.

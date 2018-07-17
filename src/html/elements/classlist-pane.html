@@ -1,0 +1,153 @@
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="classlist-item.html">
+
+<dom-module id="classlist-pane">
+
+    <template>
+        <style>
+        </style>
+
+        <div>
+            <classlist-item is-online="true" profile-id="{{me.ProfileIdentifier}}" name="{{me.FirstName}} {{me.LastName}}"></classlist-item>
+        </div>
+
+        <h2> Online({{onlineStudents.length}})</h2>
+        <div>
+            <template is="dom-repeat" items="{{onlineStudents}}">
+                <classlist-item is-online="true" profile-id$="{{_fetchUserProfile(item)}}" name$="{{_fetchUserDisplayName(item)}}"></classlist-item>
+            </template>
+        </div>
+
+        <h2>Offline({{offlineStudents.length}})</h2>
+        <div>
+            <template is="dom-repeat" items="{{offlineStudents}}">
+                <classlist-item profile-id$="{{_fetchUserProfile(item)}}" name$="{{_fetchUserDisplayName(item)}}"></classlist-item>
+            </template>
+        </div>
+
+        <iron-ajax
+            url="https://localhost:34343/classlist"
+            handle-as="json"
+            on-response="_handleClasslistResponse"
+            id="classlistRequest">
+        </iron-ajax>
+
+    </template>
+
+    <script>
+        class ClasslistPane extends Polymer.Element {
+            static get is(){ return 'classlist-pane'; }
+            static get properties() {
+                return {
+                    onlineBeforeClasslist: {
+                        type: String,
+                        value() {
+                            return [];
+                        }
+                    },
+                    onlineStudents: {
+                        type: String,
+                        value() {
+                            return [];
+                        }
+                    },
+                    offlineStudents: {
+                        type: Array,
+                        value() {
+                            return [];
+                        }
+                    },
+                    classlist: {
+                        type: Array,
+                        value() {
+                            return [];
+                        }
+                    },
+                    me: {
+                        type: Object,
+                        value() {
+                            return {};
+                        }
+                    },
+                    loading: {
+                        type: Boolean,
+                        value: true
+                    }
+                };
+            }
+
+            loadClasslist() {
+               this.$.classlistRequest.generateRequest();
+            }
+            static get observers() {
+                return [
+                    // Observer method name, followed by a list of dependencies, in parenthesis
+                    '_onlineStudentsChanged(onlineStudents.*)'
+                ]
+            }
+
+            userWentOffline(userId) {
+                var index = this.onlineStudents.indexOf(userId);
+                if(index != -1){
+                    this.splice('onlineStudents', index, 1);
+                }
+            }
+
+            userWentOnline(userId) {
+                if(userId != this.me.Identifier){
+                    if(this.loading) {
+                        this.push('onlineBeforeClasslist', userId);
+                    } else {
+                        this.push('onlineStudents', userId);
+                    }        
+                }
+          
+            }
+
+            _handleClasslistResponse(response) {
+                this.classlist = response.detail.response;
+                this.classlist.forEach(function(element) {
+                    if(element.Identifier != this.me.Identifier) {
+                       this.push('offlineStudents', element.Identifier);
+                    } 
+                }, this);
+                this.loading = false;
+                this.onlineBeforeClasslist.forEach(function(element) {
+                     this.push('onlineStudents', element);
+                }, this);
+            }
+
+            _onlineStudentsChanged() {
+                var allStudentIds = this.classlist.map(x => x.Identifier);
+                this.offlineStudents = allStudentIds.filter( 
+                    x => this.onlineStudents.indexOf(x) == -1 && 
+                    x != this.me.Identifier
+                );
+            }
+
+            _fetchUserDisplayName(userId) {
+                var found = this.classlist.find(function(element) {
+                    return element.Identifier == userId;
+                });
+                if(!found) {
+                    return "Anonymous";
+                }
+                return found.DisplayName;              
+            }
+
+            _fetchUserProfile(userId) {
+                var found = this.classlist.find(function(element) {
+                    return element.Identifier == userId;
+                });
+                 if(!found) {
+                    return "anonymous";
+                }
+                return found.ProfileIdentifier;              
+            }
+        }
+
+        window.customElements.define(ClasslistPane.is, ClasslistPane);
+    </script>
+
+</dom-module>

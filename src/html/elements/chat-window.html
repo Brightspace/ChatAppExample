@@ -1,0 +1,84 @@
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../bower_components/polymer/lib/elements/dom-repeat.html">
+
+<dom-module id="chat-window">
+
+    <template>
+        <style>
+            :host {
+                width: 100%;
+            }
+            .fullHeightFlex {
+                display: flex;
+                flex: 1 0 0;
+                flex-direction: column;
+            }
+            .chatMessages {
+                justify-content: flex-end;
+                padding-bottom: 5px;
+            }
+            .chatMessage {
+                background-color: lightgrey;
+                padding: 10px 20px 0px 20px;
+            }
+        </style>
+        <div class="chatMessages fullHeightFlex">
+            <template is="dom-repeat" items="{{messages}}">
+                <div class="chatMessage">
+                    <div>
+                        <b>[[item.name]]</b>
+                    </div>
+                    <div>
+                        [[item.message]]
+                    </div>
+                </div>
+            </template>
+        </div>
+
+        <iron-ajax
+            auto
+            url="https://localhost:34343/messages"
+            handle-as="json"
+            on-response="_handleMessagesResponse">
+        </iron-ajax>
+    </template>
+
+    <script>
+        class ChatWindow extends Polymer.Element {
+
+            static get is() { return 'chat-window'; }
+            static get properties() {
+                return {
+                    messages: {
+                        type: Array,
+                        value() {
+                            return [];
+                        }
+                    }
+                };
+            }
+
+            static get observers() {
+                return [
+                    // Observer method name, followed by a list of dependencies, in parenthesis
+                    '_messagesListChanged(messages.*)'
+                ]
+            }
+        
+            _messagesListChanged(messages){
+                this.dispatchEvent(new CustomEvent('scroll-to-bottom', {bubbles: true, composed: true}));
+            }
+
+            addMessage( message ) {
+                this.push( "messages", message );
+            }
+
+            _handleMessagesResponse(response) {
+                this.messages = response.detail.response;
+            }
+        }
+
+        window.customElements.define(ChatWindow.is, ChatWindow);
+    </script>
+
+</dom-module>
