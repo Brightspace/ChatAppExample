@@ -10,7 +10,10 @@
         "rules": ["polymer-2-hybrid"]
     },
     "extraDependencies": [
-        "bower_components/webcomponentsjs/webcomponents-lite.js"
+        "bower_components/webcomponentsjs/webcomponents-lite.js",
+        "bower_components/d2l-typography/d2l-typography.html",
+        "bower_components/d2l-typography/d2l-typography-shared-styles.html",
+        "bower_components/d2l-colors/d2l-colors.html"
     ],
-    "sources": [ "src/html/*"]
+    "sources": ["src/html/*","bower.json"]
 }

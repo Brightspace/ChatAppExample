@@ -1,31 +1,40 @@
 <link rel="import" href="../../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="../../../bower_components/d2l-loading-spinner/d2l-loading-spinner.html">
 <link rel="import" href="classlist-item.html">
 
 <dom-module id="classlist-pane">
 
     <template>
         <style>
+            .borderAndPadding {
+                padding: 10px;
+            }
         </style>
 
-        <div>
-            <classlist-item is-online="true" profile-id="{{me.ProfileIdentifier}}" name="{{me.FirstName}} {{me.LastName}}"></classlist-item>
-        </div>
+        <div class="borderAndPadding">
+            <div>
+                <classlist-item is-online="true" profile-id="{{me.ProfileIdentifier}}" name="{{me.FirstName}} {{me.LastName}}"></classlist-item>
+            </div>
 
-        <h2> Online({{onlineStudents.length}})</h2>
-        <div>
-            <template is="dom-repeat" items="{{onlineStudents}}">
-                <classlist-item is-online="true" profile-id$="{{_fetchUserProfile(item)}}" name$="{{_fetchUserDisplayName(item)}}"></classlist-item>
-            </template>
-        </div>
+            <h2> Online({{onlineStudents.length}})</h2>
+            <div>
+                <template is="dom-repeat" items="{{onlineStudents}}">
+                    <classlist-item is-online="true" profile-id$="{{_fetchUserProfile(item)}}" name$="{{_fetchUserDisplayName(item)}}"></classlist-item>
+                </template>
+            </div>
 
-        <h2>Offline({{offlineStudents.length}})</h2>
-        <div>
-            <template is="dom-repeat" items="{{offlineStudents}}">
-                <classlist-item profile-id$="{{_fetchUserProfile(item)}}" name$="{{_fetchUserDisplayName(item)}}"></classlist-item>
-            </template>
-        </div>
+            <h2>Offline({{offlineStudents.length}})</h2>
+            <div>
+                <template is="dom-repeat" items="{{offlineStudents}}">
+                    <classlist-item profile-id$="{{_fetchUserProfile(item)}}" name$="{{_fetchUserDisplayName(item)}}"></classlist-item>
+                </template>
+            </div>
 
+            <div hidden$="[[!loading]]">
+                <d2l-loading-spinner size="50"></d2l-loading-spinner>
+            </div>
+        </div>
         <iron-ajax
             url="https://localhost:34343/classlist"
             handle-as="json"
@@ -116,6 +125,7 @@
                 this.onlineBeforeClasslist.forEach(function(element) {
                      this.push('onlineStudents', element);
                 }, this);
+               
             }
 
             _onlineStudentsChanged() {

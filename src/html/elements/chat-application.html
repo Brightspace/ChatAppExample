@@ -1,5 +1,7 @@
 <link rel="import" href="../../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../../bower_components/d2l-text-input/d2l-text-input.html">
+<link rel="import" href="../../../bower_components/d2l-button/d2l-button.html">
 <link rel="import" href="chat-window.html">
 <link rel="import" href="classlist-pane.html">
 
@@ -21,17 +23,17 @@
                 width: 100%;
             }
             .leftDisplay {
-                background-color: red; 
-                flex: 4 0 0;
+                flex: 2 0 0;
             }
             .rightDisplay {
-                background-color: green;  
-                flex: 1 0 0;  
-                padding: 10px;    
+                flex: 1 0 0; 
                 overflow: auto;
+                border-left: var(--d2l-color-celestine) solid 3px;
             }
             .title {
                 padding-left: 10px;
+                background: var(--d2l-color-celestine);
+                color: white;
             }
             .leftInnerDisplay {
                 display: flex;
@@ -41,7 +43,6 @@
             }
             .chatDisplay {
                 width: 100%;
-                background: blue;
                 flex-grow: 1;
                 overflow-x: hidden;
                 overflow-y: auto;
@@ -50,6 +51,7 @@
             }
             .chatInput {
                 width: 100%;
+                border-top: var(--d2l-color-celestine) solid 3px;
             }
             .submit {
                 padding: 20px;
@@ -67,7 +69,7 @@
 
         <div class="content">
             <div class="title">
-                <h2>Chat</h2>
+                <h2>Chatspace</h2>
             </div>
             <div class="chatApplication">
                 <div class="leftDisplay">
@@ -77,8 +79,9 @@
                         </div>
                         <div class="chatInput">
                             <div class="submit">
-                                <input on-keydown="_checkForEnter" id="messageText" type="text"></textarea>
-                                <input on-click="_sendMessage" id="sendButton" value="send" type="button" />
+                                <!--<input on-keydown="_checkForEnter" id="messageText" type="text"></textarea>-->
+                                <d2l-text-input on-keydown="_checkForEnter" id="messageText"></d2l-text-input>
+                                <d2l-button on-click="_sendMessage" id="sendButton" primary>send</d2l-button>
                             </div>
                         </div>
                     </div>
