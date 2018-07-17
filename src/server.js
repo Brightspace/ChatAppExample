@@ -20,6 +20,7 @@ app.use(require('./authorization/oauth.js')());
 app.use(require('./apis/whoami')());
 app.use(require('./apis/classlist')());
 app.use(require('./apis/profileimage')());
+app.use(require('./apis/messages')());
 
 /* GET /
 * The default server location that will return the index html page.
