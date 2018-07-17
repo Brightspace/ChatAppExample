@@ -16,7 +16,7 @@ app.use(require('./authorization/oauth.js')());
 
 // Import API Calls
 app.use(require('./apis/whoami')());
-app.use(require('./apis/enrollments')());
+app.use(require('./apis/classlist')());
 
 /* GET /
 * The default server location that will return the index html page.

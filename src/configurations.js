@@ -23,6 +23,6 @@ module.exports = {
     state: process.env.STATE || 'ed9dda12-1397-4bac-aba2-096acc7d24f1',
     tokenEndpoint: process.env.TOKEN_ENDPOINT || 'https://auth-dev.proddev.d2l/core/connect/token',
     orgUnitId: 6609,
-    successEndpoint: '/allenrollments'
+    successEndpoint: '/classlist'
 };
 }());
