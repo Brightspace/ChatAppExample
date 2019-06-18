@@ -14,8 +14,6 @@ const createUrl = function(apiRoute) {
 
 module.exports = function() {
 
-    var messages = [];
-    
     /* GET /messages
     *  Returns the list of messages
     */
