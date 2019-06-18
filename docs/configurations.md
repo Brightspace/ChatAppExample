@@ -23,7 +23,8 @@ Several different configurations can be set an environment level or directly in 
     * The port that the instance you are connecting to uses. Most likely this should be set to 443.
 * ```instanceUrl``` (string)
     * The URL for the instance that you are connect to. This should NOT include the scheme as described above. An example value for this is: 'devcop.brightspace.com'.
-* ```state``` (string)
-    * The state is a value sent with the initial [OAuth 2.0](authentication.md) request to the Authentication Endpoint. When the OAuth 2.0 callback is called, the state will be passed in and can be verified with this configured value to ensure the callback was initiated from the proper location. **This value was hardcoded for the sample but normally should change with each OAuth workflow and stored securely. The state helps protect against [CSRF](https://tools.ietf.org/html/rfc6749#section-10.12) and should be a non-guessable value as described [here](https://tools.ietf.org/html/rfc6749#section-10.10).**
+* ```stateCookieName``` (string)
+    * The name for the cookie where the OAuth 2.0 state value is stored during authentication
+    * The state is a value sent with the initial [OAuth 2.0](authentication.md) request to the Authentication Endpoint. When the OAuth 2.0 callback is called, the state will be passed in and can be verified with this configured value to ensure the callback was initiated from the proper location. The state helps protect against [CSRF](https://tools.ietf.org/html/rfc6749#section-10.12) and should be a non-guessable value as described [here](https://tools.ietf.org/html/rfc6749#section-10.10).
 * ```tokenEndpoint``` (string/URL)
     * This is the token endpoint/URL that is used in the [OAuth 2.0 Authentication](authentication.md) workflow when exchanging an Authentication Token for an access token. The value for this route was obtained from [here](http://docs.valence.desire2learn.com/basic/oauth2.html#setting-up-oauth-2-0-authentication).
