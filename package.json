@@ -20,8 +20,10 @@
     "superagent": "~0.17.0"
   },
   "devDependencies": {
+    "bower": "^1.8.4",
     "jshint": "^2.9.5",
-    "openssl-self-signed-certificate": "^1.1.6"
+    "openssl-self-signed-certificate": "^1.1.6",
+    "polymer-cli": "^1.7.7"
   },
   "repository": "https://github.com/Brightspace/Valence-Chat.git",
   "private": false
